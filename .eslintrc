@@ -1,0 +1,28 @@
+{
+  "rules": {
+    "quotes": [2, "single"],
+    "strict": [2, "never"],
+    "no-underscore-dangle": 0,
+    "dot-notation": [2, {
+      "allowPattern": "^[a-z]+(_[a-z]+)+$"
+    }],
+    "no-unused-expressions": 0
+  },
+  "ecmaFeatures": {
+    "generators": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+
+  "globals": {
+    "describe": true,
+    "it": true,
+    "before": true,
+    "after": true,
+    "beforeEach": true,
+    "afterEach": true
+  }
+}

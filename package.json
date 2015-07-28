@@ -2,7 +2,7 @@
   "name": "githost",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,13 +17,17 @@
   },
   "homepage": "https://github.com/RobinQu/githost",
   "dependencies": {
+    "bluebird": "^2.9.34",
     "debug": "~2.2.0",
     "koa": "~0.21.0",
     "koa-router": "~5.1.2",
+    "lodash": "^3.10.0",
+    "mkdirp": "^0.5.1",
     "through2": "~2.0.0"
   },
   "devDependencies": {
     "chai": "~3.2.0",
+    "eslint": "^0.24.1",
     "mocha": "~2.2.5",
     "sinon": "~1.15.4"
   }

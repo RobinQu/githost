@@ -5,7 +5,7 @@ HTTP Git sever, powered by koa
 
 ## Usage
 
-Depends on `git` CLI currently. It will use something like libgit in the future.
+Depends on `git` CLI currently. It will use something like `libgit` in the future.
 
 ### Basics
 

@@ -1,18 +1,20 @@
 var githost = require('..');
 var Promise = require('bluebird');
+var util = require('util');
 
 var delegate = githost.HostDelegate.create({
-  message: function (event, write, end) {
-    console.log('xxx');
+  message: function (event, write) {
     write('Powered by GitHost');
-    write('Good bye');
-    end();
   },
   intercept: function (event) {
     if(event.repo.group === 'secrets') {
       return Promise.resolve(false);
     }
     return Promise.resolve(true);
+  },
+  after: function (event, write, end) {
+    write(util.format('End for repo %j', event.repo));
+    end();
   }
 });
 

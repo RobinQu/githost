@@ -9,12 +9,12 @@ Depends on `git` CLI currently. It will use something like `libgit` in the futur
 
 ### Basics
 
-Start GitHost server
+Start GitHost server,using `githost.repo(options)`
 
 ```
 var githost = require('githost');
 
-githost.create().listen(8080, function () {
+githost.repo().listen(8080, function () {
   console.log('git server is up and running at port 8080');
 });
 ```
@@ -22,8 +22,16 @@ githost.create().listen(8080, function () {
 Using git commands, like:
 
 ```
-git push http://localhost:8080/myGroup/myRepo master
+git push http://localhost:8080/myGroup/myRepo.git master
 ```
+
+Options:
+
+* `options.root`: {String} root directory of repo
+* `options.delegate`: {HostDelegate} repo delegate object
+* `options.autoCreate`: {Boolean} create an empty repo if not found
+* `options.checkout`: {Boolean} checkout the files instead of using a bare repo
+
 
 ### Delegate
 
@@ -51,11 +59,11 @@ var delegate = githost.HostDelegate.create({
 
 
     //returns a yieldable to determine if this event should be intercepted
-    return Promise.resolve(true);
+    return Promise.resolve({ok: true});
   }
 });
 
-var app = githost.create({delegate: delegate});
+var app = githost.repo({delegate: delegate});
 app.listen(7070);
 ```
 
@@ -67,7 +75,10 @@ var mount = require('koa-mount');
 var app = require('koa');
 var githost = require('githost');
 
-app.use(mount('/git', githost.create()));
+app.use(mount('/git', githost.repo()));
+//Or
+// githost.repo(app, options);
+
 app.use(function *() {
   if(this.path.indexOf('/git') === -1) {
     this.body = 'outside git repo';

@@ -8,9 +8,9 @@ var delegate = githost.HostDelegate.create({
   },
   intercept: function (event) {
     if(event.repo.group === 'secrets') {
-      return Promise.resolve(false);
+      return Promise.resolve({ok: false, message: 'bad luck', status: 400});
     }
-    return Promise.resolve(true);
+    return Promise.resolve({ok: true});
   },
   after: function (event, write, end) {
     write(util.format('End for repo %j', event.repo));

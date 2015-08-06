@@ -7,9 +7,10 @@ expect = require('chai').expect
 
 describe 'Delegate', ->
 
-  stub = sinon.stub().callsArg(2)
+  stub = sinon.stub().callsArg(3)
   delegate = githost.HostDelegate.create(
-    intercept: (event)->
+    intercept: (git, event)->
+      expect(git instanceof githost.GitHost).to.be.ok
       if event.repo.name.indexOf('bad') > -1
         Promise.resolve(ok: false, message: 'bad luck', status: 401)
       else
@@ -36,7 +37,9 @@ describe 'Delegate', ->
     .type('application/octet-stream')
     .expect(->
         expect(stub.called).to.be.ok
-        event = stub.lastCall.args[0]
+        git = stub.lastCall.args[0]
+        expect(git instanceof githost.GitHost).to.be.ok
+        event = stub.lastCall.args[1]
         expect(event.repo.name).to.equal('myrepo')
         expect(event.headers.length).to.above(0)
       )

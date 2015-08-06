@@ -1,15 +1,13 @@
 githost = require '../'
 request = require 'supertest'
 Buffer = require('buffer').Buffer
-fs = require 'fs'
-path = require 'path'
+
 sinon = require 'sinon'
 expect = require('chai').expect
 
-describe 'Simple HTTP', ->
+Utils = require './utils'
 
-  loadData = (name)->
-    return fs.readFileSync(path.join(__dirname, "./dat/#{name}.dat"))
+describe 'Simple HTTP', ->
 
   srv = githost.repo()
 
@@ -19,7 +17,6 @@ describe 'Simple HTTP', ->
     request(srv.listen())
     .get('/mygroup/myrepo.git/info/refs')
     .query({service: 'receive-pack'})
-    # .send(loadData('info_recieve_pack_resp'))
     .expect('content-type', 'application/x-git-receive-pack-advertisement')
     .expect(200)
     .expect(->
@@ -36,7 +33,7 @@ describe 'Simple HTTP', ->
     srv.once('git:header', cb)
     request(srv.listen())
     .post('/mygroup/myrepo.git/git-upload-pack')
-    .send(loadData('upload_pack_req'))
+    .send(Utils.loadData('upload_pack_req'))
     .type('application/octet-stream')
     .expect('content-type', 'application/x-git-upload-pack-result')
     .expect(200)
@@ -55,7 +52,7 @@ describe 'Simple HTTP', ->
     request(srv.listen())
     .post('/mygroup/myrepo.git/git-receive-pack')
     .type('application/octet-stream')
-    .send(loadData('receive_pack_req'))
+    .send(Utils.loadData('receive_pack_req'))
     .expect('content-type', 'application/x-git-receive-pack-result')
     .expect(200)
     .expect(->
